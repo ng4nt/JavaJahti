@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>JavaJahti tilastot</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<h3>Oikeat vs Väärät</h3>
+<canvas id="resultChart"></canvas>
+
+<h3>Virhetyyppi jakauma</h3>
+<canvas id="typeChart"></canvas>
+
+<script>
+    const stats = JSON.parse(window.Android.getStats());
+
+    new Chart(document.getElementById("resultChart"), {
+        type: "doughnut",
+        data: {
+            labels: ["Oikein", "Väärin"],
+            datasets: [{
+                data: [stats.correct, stats.wrong],
+                backgroundColor: ["#4caf50", "#e25847"]
+            }]
+        }
+    });
+
+    new Chart(document.getElementById("typeChart"), {
+        type: "bar",
+        data: {
+            labels: ["Syntaksi", "Tietotyyppi", "Logiikka", "Vertailu- ja sijoitus"],
+            datasets: [{
+                data: [
+                    stats.syntax,
+                    stats.type,
+                    stats.logic,
+                    stats.comparison
+                ],
+                backgroundColor: "#046a88"
+            }]
+        }
+    });
+
+    function goBack() {
+        window.Android.finish();
+    }
+</script>
+
+<button onclick="goBack()">Takaisin peliin</button>
+
+</body>
+</html>
